@@ -1,0 +1,13 @@
+if(!exists("NEI")){
+  NEI <- readRDS("./data/summarySCC_PM25.rds")
+}
+if(!exists("SCC")){
+  SCC <- readRDS("./data/Source_Classification_Code.rds")
+}
+library(ggplot2)
+png("plot5.png", width=640, height=480)
+baltimore_em<-NEI[NEI$fips=="24510",]
+baltimore_motor<-baltimore_em[baltimore_em$type=="ON-ROAD",]
+balt_motor_year<-aggregate(Emissions~year,data=baltimore_motor,FUN=sum)
+with(balt_motor_year,plot(year,Emissions,type="l"))
+dev.off()

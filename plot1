@@ -1,0 +1,11 @@
+if(!exists("NEI")){
+  NEI <- readRDS("./data/summarySCC_PM25.rds")
+}
+if(!exists("SCC")){
+  SCC <- readRDS("./data/Source_Classification_Code.rds")
+}
+library(ggplot2)
+png("plot1.png", width=640, height=480)
+emission_year<-aggregate(Emissions~year,data=NEI,FUN=sum)
+plot(emission_year$year,emission_year$Emissions,type="l")
+dev.off()

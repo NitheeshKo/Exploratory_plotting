@@ -1,0 +1,18 @@
+if(!exists("NEI")){
+  NEI <- readRDS("./data/summarySCC_PM25.rds")
+}
+if(!exists("SCC")){
+  SCC <- readRDS("./data/Source_Classification_Code.rds")
+}
+library(ggplot2)
+png("plot6.png", width=640, height=480)
+losangeles_em<-NEI[NEI$fips=="06037",]
+losangeles_year<-aggregate(Emissions~year,data=losangeles_em,FUN=sum)
+baltimore_em<-NEI[NEI$fips=="24510",]
+baltimore_year_fips<-aggregate(Emissions~year+fips,data=baltimore_em,FUN=sum)
+losangeles_year_fips<-aggregate(Emissions~year+fips,data=losangeles_em,FUN=sum)
+balt_los_year_fips<-rbind(baltimore_year_fips,losangeles_year_fips)
+g <- ggplot(balt_los_year_fips, aes(year, Emissions, color = fips))
+g <- g + geom_line()
+print(g)
+dev.off()
